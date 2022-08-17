@@ -23,12 +23,22 @@ namespace Restaurant.DAL.Implementations
             await _dbSet.AddRangeAsync(entities);
         }
 
-        public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null)
+        public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
            IQueryable<T> query = _dbSet;  
             if(filter != null)
             {
                 query= query.Where(filter); 
+            }
+            if(includeProperties != null)
+            {
+                // includeProperties ="Category,FoodType"
+                string[] arrProperties = includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries);  
+                foreach(string prop in arrProperties)
+                {
+                    query = query.Include(prop);
+                }
+                
             }
             return await query.ToListAsync();
 

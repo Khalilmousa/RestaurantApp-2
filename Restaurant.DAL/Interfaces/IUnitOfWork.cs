@@ -10,6 +10,7 @@ namespace Restaurant.DAL.Interfaces
     {
         ICategoryRepository CategoryRepo { get; }
         IFoodTypeRepository FoodTypeRepo { get; }   
+        IMenuItemRepository MenuItemRepo { get; }   
         Task<bool> Save();
     }
 }
