@@ -9,12 +9,11 @@
 <div class="p-1">
     <div class="row">
         <div class="col-12">
-            <a class="btn btn-outline-info mt-1 mb-2 p-1" asp-page="Create"><i class="fa-solid fa-circle-plus"></i> Create </a>
-            <table class="table table-bordered table-striped">
+            <a class="btn btn-outline-info mt-1 mb-2 p-1" asp-page="AddOrEdit"><i class="fa-solid fa-circle-plus"></i> Create </a>
+            <table id="DtMenuItems" class="w-100 table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>@Html.DisplayNameFor(model=>model.MenuItems.ElementAt(0).Name)</th>
-                        <th>@Html.DisplayNameFor(model=>model.MenuItems.ElementAt(0).Description)</th>
                         <th>@Html.DisplayNameFor(model=>model.MenuItems.ElementAt(0).Price)</th>
                         <th>@Html.DisplayNameFor(model=>model.MenuItems.ElementAt(0).CategoryId)</th>
                         <th>@Html.DisplayNameFor(model=>model.MenuItems.ElementAt(0).FoodTypeId)</th>
@@ -22,28 +21,42 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (MenuItem categ in Model.MenuItems)
-                    {
-                        <tr>
-                            <td>@categ.Name</td>
-                            <td>@categ.Description</td>
-                            <td>@categ.Price</td>
-                            <td>@categ.CategoryId</td>
-                            <td>@categ.FoodTypeId</td>
-                            <td>
-                                <div class="w-100 btn-group">
-                                    <a asp-page="Edit" asp-route-id="@categ.Id" class="btn btn-outline-info mx-1 p-1">
-                                        <i class="fa-solid fa-pen-to-square" style="color:blueviolet;"></i>
-                                    </a>
-                                    <a asp-page="Delete" asp-route-id="@categ.Id" class="btn btn-outline-info mx-1 p-1">
-                                        <i class="fa-solid fa-trash-can" style="color:red;"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    }
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#DtMenuItems').DataTable({
+                "ajax": {
+                    "url": "?handler=List",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "name" },
+                    { "data": "price" },
+                    { "data": "category.name" },
+                    { "data": "foodType.foodTypeName" },
+                    {
+                        "data": 'id', "render": function (data) { // data is the id
+                            //`` (Altr+7) Backtick
+                            return `
+                                  <div class="w-100 btn-group">
+                                   <a href="/Admin/MenuItems/AddOrEdit?id=${data}"   class="btn btn-outline-info mx-1 p-1">
+                                    <i class="fa-solid fa-pen-to-square" style="color:blueviolet;"></i>
+                                   </a>
+                                   <a  href="/Admin/MenuItems/AddOrEdit?id=${data}" class="btn btn-outline-info mx-1 p-1">
+                                   <i class="fa-solid fa-trash-can" style="color:red;"></i>
+                                  </a>
+                                  </div>
+                                  `
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

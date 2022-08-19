@@ -1,11 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace Restaurant.Models
+namespace Restaurant.Models.ViewModels
 {
-    public class MenuItem
+    public class MenuItemViewModel
     {
-        [Key]
         public int Id { get; set; }
         [Required(ErrorMessage = "le nom est obligatoire !!!")]
         public string Name { get; set; } = string.Empty;
@@ -17,15 +22,12 @@ namespace Restaurant.Models
         public double Price { get; set; }
 
         [Required]
-        [Display(Name ="Category")]
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
-        [ForeignKey("CategoryId")]
-        public Category Category { get; set; }
 
         [Required]
         [Display(Name = "Food Type")]
         public int FoodTypeId { get; set; }
-        [ForeignKey("FoodTypeId")]
-        public FoodType FoodType { get; set; }
+
     }
 }

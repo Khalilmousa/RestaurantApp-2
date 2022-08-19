@@ -15,13 +15,14 @@ namespace RestaurantUI.Pages.Admin.MenuItems
         }
         public async Task OnGet()
         {
-            MenuItems = await _unitofWotk.MenuItemRepo.GetAll();
+            
         }
 
         public async Task<IActionResult> OnGetList()
         {
             MenuItems = await _unitofWotk.MenuItemRepo.GetAll(filter:null, "Category,FoodType");
-            return new JsonResult(new { data = MenuItems });
+            //MenuItems= MenuItems.OrderByDescending(x => x.Name).ToList();   
+            return new JsonResult(new { data = MenuItems});
         }
 
     }
