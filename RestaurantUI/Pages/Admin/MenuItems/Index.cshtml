@@ -28,8 +28,9 @@
 </div>
 @section Scripts{
     <script type="text/javascript">
+        var dataTable;
         $(document).ready(function () {
-            $('#DtMenuItems').DataTable({
+            dataTable = $('#DtMenuItems').DataTable({
                 "ajax": {
                     "url": "?handler=List",
                     "type": "GET",
@@ -46,9 +47,9 @@
                             return `
                                   <div class="w-100 btn-group">
                                    <a href="/Admin/MenuItems/AddOrEdit?id=${data}"   class="btn btn-outline-info mx-1 p-1">
-                                    <i class="fa-solid fa-pen-to-square" style="color:blueviolet;"></i>
+                                   <i class="fa-solid fa-pen-to-square" style="color:blueviolet;"></i>
                                    </a>
-                                   <a  href="/Admin/MenuItems/AddOrEdit?id=${data}" class="btn btn-outline-info mx-1 p-1">
+                                   <a  onClick=DeleteConfirm(${data}) class="btn btn-outline-info mx-1 p-1">
                                    <i class="fa-solid fa-trash-can" style="color:red;"></i>
                                   </a>
                                   </div>
@@ -58,5 +59,31 @@
                 ]
             });
         });
+
+        function DeleteConfirm(id){
+            let UrlHandler = "/Admin/MenuItems/AddOrEdit?Handler=Delete&id=" + id;
+            Swal.fire({
+                title: 'confirmation de suppresion de MenuItem !!!',
+                showCancelButton: true,
+                confirmButtonText: 'Confirm',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: UrlHandler,
+                        type: 'GET',
+                        success: function (data) {
+                            if (data.success) {
+                                dataTable.ajax.reload();
+                                Swal.fire({ icon: 'success', title: 'Confirmation delete', text: data.message });
+                            } else {
+                                Swal.fire({ icon: 'error', title: 'Oops...', text: data.message });
+                            }
+                        }// end function
+                    })// end ajax
+                }
+            })
+        }
+
     </script>
 }

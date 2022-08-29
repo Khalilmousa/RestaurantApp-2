@@ -7,7 +7,7 @@ namespace Restaurant.DAL.Interfaces
         //methods
         // GetAll, GetById, Add, Remove , AddRange, RemoveRange
         Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties=null);
-        Task<T> GetById(int id);  
+        Task<T> GetById(int? id);  
         Task Add(T entity);
         Task AddRange(IEnumerable<T> entities);
         void Remove(T entity);

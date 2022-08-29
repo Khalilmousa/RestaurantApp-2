@@ -3,6 +3,7 @@ using NToastNotify;
 using Restaurant.DAL;
 using Restaurant.DAL.Implementations;
 using Restaurant.DAL.Interfaces;
+using RestaurantUI.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ builder.Services.AddRazorPages().AddNToastNotifyToastr(new ToastrOptions()
 
 // Add Service UnitOfWork
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 
